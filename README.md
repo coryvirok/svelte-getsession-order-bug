@@ -10,7 +10,7 @@ Repro:
 
 You will see the following print out in your server-side console logs:
 
-** for GET / **
+**for GET /**
 ```
 handle() - 1st
 getSession() - 3rd
@@ -18,7 +18,7 @@ GET / - 2nd
 handle() - 4th
 ```
 
-** for GET /foo **
+**for GET /foo**
 ```
 handle() - 1st
 GET / - 2nd
