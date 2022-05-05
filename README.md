@@ -1,38 +1,26 @@
-# create-svelte
+SvelteKit appears to call `getSession()` before endpoints and it should be calling them after.
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Repro:
 
-## Creating a project
+1. `git clone https://github.com/coryvirok/svelte-getsession-order-bug.git`
+2. `cd svelte-getsession-order-bug && npm i`
+3. `npm run dev`
+4. open "http://localhost:3000" - executes a shadow endpoint `src/routes/index.js`
+5. open "http://localhost:3000/foo" - executes a non-shadow endpoint `src/routes/foo.js`
 
-If you're seeing this, you've probably already done this step. Congrats!
+You will see the following print out in your server-side console logs:
 
-```bash
-# create a new project in the current directory
-npm init svelte
-
-# create a new project in my-app
-npm init svelte my-app
+** for GET / **
+```
+handle() - 1st
+getSession() - 3rd
+GET / - 2nd
+handle() - 4th
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+** for GET /foo **
 ```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
+handle() - 1st
+GET / - 2nd
+handle() - 4th
 ```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
